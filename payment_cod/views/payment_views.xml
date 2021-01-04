@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="acquirer_form_transfer_fee" model="ir.ui.view">
+        <field name="name">acquirer.transfer.fee</field>
+        <field name="model">payment.acquirer</field>
+        <field name="inherit_id" ref="payment.acquirer_form"/>
+        <field name="arch" type="xml">
+            <!--            Hide credentials page from view-->
+            <page name="acquirer_credentials" position="attributes">
+                <attribute name="attrs">{'invisible': [('provider', 'in', ['manual', 'transfer' , 'cod'])]}</attribute>
+            </page>
+            <!--            show pending msg-->
+            <field name="pending_msg" position="attributes">
+                <attribute name="attrs">{'visible': [('provider', '=', 'cod')]}</attribute>
+            </field>
+            <!--            Hide pre done and cancel msgs, unused-->
+            <field name="pre_msg" position="attributes">
+                <attribute name="attrs">{'invisible': [('provider', '=', 'cod')]}</attribute>
+            </field>
+            <field name="done_msg" position="attributes">
+                <attribute name="attrs">{'invisible': [('provider', '=', 'cod')]}</attribute>
+            </field>
+            <field name="cancel_msg" position="attributes">
+                <attribute name="attrs">{'invisible': [('provider', '=', 'cod')]}</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>
