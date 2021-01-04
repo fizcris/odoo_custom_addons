@@ -18,4 +18,4 @@ class CodController(http.Controller):
     def cod_form_feedback(self, **post):
         _logger.info('Beginning form_feedback with post data %s', pprint.pformat(post))  # debug
         request.env['payment.transaction'].sudo().form_feedback(post, 'cod')
-        return werkzeug.utils.redirect('/payment/process')
+        return werkzeug.utils.redirect('/shop/confirmation')
