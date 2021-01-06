@@ -59,14 +59,15 @@
                             </div>
 
                             <hr style="  border-color:black; border-style:solid;"/>
-                            <h2 style="font-size: 9px; font-family: Arial;">Destinatario:</h2>
+                            
 
 
-                            <div style="height: 124px;" class="row">
-                                <div class="col-8 mt-0">
+                            <div style="height: 142px;" class="row">
+                                <div class="col-7 mt-0">
+                                    <h2 style="font-size: 9px; font-family: Arial;">Destinatario:</h2>
                                     <span style="font-size: 15px; font-family: Arial; font-weight: bold;" t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
                                 </div>
-                                <div class="col-2 px-0 mt-0">
+                                <div class="col-3 px-0 mt-0">
                                     <span style="font-size: 5px; font-family: Arial;">
                                         <t t-esc="i"/> /
                                         <span t-esc="int(line.product_uom_qty)"/>
