@@ -48,7 +48,7 @@
                 <t t-if="not line_last">
                     <t t-foreach="range(1,int(line.product_uom_qty)+1)" t-as="i">
 
-                        <div class="page">
+                        <div class="container-fluid" style="max-height: 260px !important; overflow:hidden;">
                             <div class="row">
                                 <div class="col-5 mt-0">
                                     <span style="font-size: 12px; font-family: Arial; font-weight: bold;" t-field="doc.company_id.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
@@ -65,7 +65,7 @@
                             <div style="height: 142px;" class="row">
                                 <div class="col-7 mt-0">
                                     <h2 style="font-size: 9px; font-family: Arial;">Destinatario:</h2>
-                                    <span style="font-size: 15px; font-family: Arial; font-weight: bold;" t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+                                    <span style="font-size: 70%; font-family: Arial; font-weight: bold;" t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
                                 </div>
                                 <div class="col-3 px-0 mt-0">
                                     <span style="font-size: 5px; font-family: Arial;">
