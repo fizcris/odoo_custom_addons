@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!--    Define paper format-->
+    <record id="paperformat_ql-700_62x100" model="report.paperformat">
+        <field name="name">62x100</field>
+        <field name="default" eval="True"/>
+        <field name="format">custom</field>
+        <field name="page_height">62</field>
+        <field name="page_width">100</field>
+        <field name="orientation">Portrait</field>
+        <field name="margin_top">1</field>
+        <field name="margin_bottom">1</field>
+        <field name="margin_left">1</field>
+        <field name="margin_right">1</field>
+        <field name="header_line" eval="False"/>
+        <field name="header_spacing">1</field>
+        <field name="dpi">90</field>
+    </record>
+
+
+    <!--    Define report-->
+    <report 
+    id="action_report_label" 
+    string="Label ql-700" 
+    model="sale.order" 
+    report_type="qweb-pdf" 
+    file="reports_custom.report_label" 
+    name="reports_custom.report_label" 
+    print_report_name="'LABEL - %s' % (object.name)" 
+    paperformat="paperformat_ql-700_62x100" />
+
+    <!--    Define report views-->
+    <template id="report_label_document">
+        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+        <t t-call="web.internal_layout">
+
+            <div class="row">
+                <div class="col-5 mt-2">
+                    <span style="font-size: 12.2px; font-family: Arial; font-weight: bold;" t-field="doc.company_id.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                </div>
+                <div class="col-7 px-0 mt-4">
+                    <img class="img-fluid" src="/reports_custom/static/src/img/logo_bw.png" style="max-height: 55mm;"/>
+                </div>
+            </div>
+
+            <hr style="  border-color:black; border-style:solid;"/>
+            <h2 style="font-size: 9px; font-family: Arial;">Destinatario:</h2>
+
+            <span style="font-size: 1vh; font-family: Arial; font-weight: bold;" t-field="doc.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+        </t>
+    </template>
+
+    <!-- Override web.internal_layout template    -->
+    <template id="web.internal_layout">
+        <t t-name="web.internal_layout">
+            <t t-if="not o" t-set="o" t-value="doc"/>
+
+            <t t-if="not company">
+                <!-- Multicompany -->
+                <t t-if="company_id">
+                    <t t-set="company" t-value="company_id"/>
+                </t>
+                <t t-elif="o and 'company_id' in o">
+                    <t t-set="company" t-value="o.company_id.sudo()"/>
+                </t>
+                <t t-else="else">
+                    <t t-set="company" t-value="res_company"/>
+                </t>
+            </t>
+
+            <div class="article" t-att-data-oe-model="o and o._name" t-att-data-oe-id="o and o.id" t-att-data-oe-lang="o and o.env.context.get('lang')">
+                <t t-raw="0"/>
+            </div>
+        </t>
+    </template>
+
+
+
+    <template id="report_label">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="reports_custom.report_label_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+
+</odoo>
