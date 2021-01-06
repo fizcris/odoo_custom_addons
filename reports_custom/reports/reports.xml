@@ -32,23 +32,43 @@
 
     <!--    Define report views-->
     <template id="report_label_document">
-        <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
         <t t-call="web.internal_layout">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+            <t t-foreach="doc.order_line" t-as="line">
+               <t t-if="not line_last">
+                 <t t-foreach="range(1,int(line.product_uom_qty)+1)" t-as="i">
 
+            <div class="page">
             <div class="row">
                 <div class="col-5 mt-0">
-                    <span style="font-size: 12.2px; font-family: Arial; font-weight: bold;" t-field="doc.company_id.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
+                    <span style="font-size: 12px; font-family: Arial; font-weight: bold;" t-field="doc.company_id.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
                 </div>
                 <div class="col-7 px-0 mt-2">
-                    <img class="img-fluid" src="/reports_custom/static/src/img/logo_bw.png" style="max-height: 55mm;"/>
+                    <img class="img-fluid" src="/reports_custom/static/src/img/logo_bw.png" style="max-height: 40mm;"/>
                 </div>
             </div>
 
             <hr style="  border-color:black; border-style:solid;"/>
             <h2 style="font-size: 9px; font-family: Arial;">Destinatario:</h2>
-
-            <span style="font-size: 15px; font-family: Arial; font-weight: bold;" t-field="doc.partner_id" t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}'/>
-        </t>
+            
+            
+            <div style="height: 124px;" class="row">
+                <div class="col-8 mt-0">
+                    <span style="font-size: 15px; font-family: Arial; font-weight: bold;" t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+                </div>
+                <div class="col-2 px-0 mt-2">
+                      <span style="font-size: 5px; font-family: Arial;"><t t-esc="i"/> / <span t-esc="int(line.product_uom_qty)"/></span>
+                      
+                    <span style="font-size: 5px; font-family: Arial;" t-field="line.display_name"/>
+            </div>
+            
+            </div>
+            </div>
+            
+        </t> 
+        </t></t>
+    </t>
+    </t>
     </template>
 
     <!-- Override web.internal_layout template    -->
