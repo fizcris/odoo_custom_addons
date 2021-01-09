@@ -47,7 +47,7 @@
                 <t t-set="numberOfLabels" t-value="numberOfLabels+line.product_uom_qty"/>
                 </t>
                 <t t-if="line_last">
-                    <t t-set="sipping_method" t-value="line.name"/>
+                    <t t-set="sipping_method" t-value="line.product_id.name"/>
                     
               <t t-if="'Entrega' not in sipping_method">
               <t t-set="wrongLabel" t-value="1"/>
