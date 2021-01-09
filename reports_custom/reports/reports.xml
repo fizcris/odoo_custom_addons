@@ -31,24 +31,43 @@
 
     <!--    Define report views-->
     <template id="report_label_document">
-
+    <?xml version="1.0"?>
         <t t-call="web.internal_layout">
             <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
             <t t-set="sipping_method" t-value="'__'"/>
-
-            <t t-foreach="doc.order_line" t-as="line">
-                <t t-if="line_last">
-                    <t t-set="sipping_method" t-value="line.name"/>
-                </t>
-            </t>
-
-
+            <t t-set="numberOfProdLines" t-value="0"/>
+            <t t-set="numberOfLabels" t-value="0"/>
+            <t t-set="labelNumber" t-value="0"/>
+            <t t-set="lineNumber" t-value="0"/>
+            <t t-set="wrongLabel" t-value="0"/>
 
             <t t-foreach="doc.order_line" t-as="line">
                 <t t-if="not line_last">
-                    <t t-foreach="range(1,int(line.product_uom_qty)+1)" t-as="i">
+                <t t-set="numberOfProdLines" t-value="numberOfProdLines+1"/>
+                <t t-set="numberOfLabels" t-value="numberOfLabels+line.product_uom_qty"/>
+                </t>
+                <t t-if="line_last">
+                    <t t-set="sipping_method" t-value="line.name"/>
+                    
+              <t t-if="'Entrega' not in sipping_method">
+              <t t-set="wrongLabel" t-value="1"/>
+              <p style="font-size: 20px; font-family: Arial; text-align: center; color:red;">
+              <span>Por favor añada un método de "Entrega" como
+              último item del pedido para la correcta generación de la etiqueta</span>
+              </p> 
+              </t>
+              </t>
+            </t>
+            
 
-                        <div class="container-fluid" style="max-height: 260px !important; overflow:hidden;">
+            <t t-foreach="doc.order_line" t-as="line">
+              
+              <t t-if="not wrongLabel">
+                <t t-if="not line_last">
+                    <t t-foreach="range(1,int(line.product_uom_qty)+1)" t-as="i">
+                      <t t-set="labelNumber" t-value="labelNumber+1"/>
+
+                        <div class="page">
                             <div class="row">
                                 <div class="col-5 mt-0">
                                     <span style="font-size: 12px; font-family: Arial; font-weight: bold;" t-field="doc.company_id.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
@@ -65,31 +84,36 @@
                             <div style="height: 142px;" class="row">
                                 <div class="col-7 mt-0">
                                     <h2 style="font-size: 9px; font-family: Arial;">Destinatario:</h2>
-                                    <span style="font-size: 70%; font-family: Arial; font-weight: bold;" t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+                                    <span style="font-size: 15px; font-family: Arial; font-weight: bold;" t-field="doc.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
                                 </div>
-                                <div class="col-3 px-0 mt-0">
-                                    <span style="font-size: 5px; font-family: Arial;">
-                                        <t t-esc="i"/> /
-                                        <span t-esc="int(line.product_uom_qty)"/>
+                                <div class="col-4 px-0 mt-0">
+                                    <p style="font-size: 10px; font-family: Arial; line-height:normal;">
+                                      Item pedido:
+                                      <t t-esc="labelNumber"/>/<t t-esc="int(numberOfLabels)"/>
+                                      <br />
+                                      
+                                      <p style="font-size: 10px; font-family: Arial;">
+                                      <span  t-field="line.display_name"/>
+                                      <span> - <t t-esc="i"/>/<t t-esc="int(line.product_uom_qty)"/></span>
+                                      </p>
+                                      
+                                      
+                                      <p style="font-size: 10px; font-family: Arial;" t-esc="sipping_method"/>
 
-                                        <p style="font-size: 5px; font-family: Arial;" t-field="line.display_name"/>
-                                        <p style="font-size: 5px; font-family: Arial;" t-esc="sipping_method"/>
 
-
-                                    </span>
+                                    </p>
 
                                 </div>
 
                             </div>
                         </div>
-
+                      </t>
                     </t>
                 </t>
             </t>
-        </t>
+    </t>
 
-
-
+    
     </template>
 
     <!-- Override web.internal_layout template    -->
